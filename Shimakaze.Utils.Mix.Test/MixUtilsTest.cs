@@ -25,6 +25,7 @@ namespace Shimakaze.Utils.Mix.Test
 
             Console.WriteLine("All Test Pass!");
         }
+
         [TestMethod]
         public async Task PackTestAsync()
         {
@@ -40,27 +41,39 @@ namespace Shimakaze.Utils.Mix.Test
             Console.WriteLine("Normal TS Mix Packing...");
             await MixUtils.Pack(@"Out\NormalTSTest.mix", fileList, true).ConfigureAwait(false);
 
-            // Console.WriteLine("Encrypted Mix Packing...");
-            // await MixUtils.Pack(@"Out\EncryptedTest.mix", fileList, false, true).ConfigureAwait(false);
+            Console.WriteLine("Encrypted Mix Packing...");
+            await MixUtils.Pack(@"Out\EncryptedTest.mix", fileList, false, true).ConfigureAwait(false);
 
-            // Console.WriteLine("Encrypted TS Mix Packing...");
-            // await MixUtils.Pack(@"Out\EncryptedTSTest.mix", fileList, true, true).ConfigureAwait(false);
+            Console.WriteLine("Encrypted TS Mix Packing...");
+            await MixUtils.Pack(@"Out\EncryptedTSTest.mix", fileList, true, true).ConfigureAwait(false);
 
             Console.WriteLine("All Test Pass!");
         }
+
         [TestMethod]
         public async Task EncryptTestAsync()
         {
             Console.WriteLine("Use Key Encrypting...");
             await MixUtils.Encrypt(@"Resources\NormalTest.mix", @"Out\CopyKeyEncryptTest.mix", @"Resources\EncryptedTest.mix");
             Console.WriteLine("UnPacking...");
-            await MixUtils.UnPack( @"Out\CopyKeyEncryptTest.mix", @"Out\CopyKeyEncryptTest").ConfigureAwait(false);
+            await MixUtils.UnPack(@"Out\CopyKeyEncryptTest.mix", @"Out\CopyKeyEncryptTest").ConfigureAwait(false);
 
             Console.WriteLine("Random Key Encrypting...");
             await MixUtils.Encrypt(@"Resources\NormalTest.mix", @"Out\RandomKeyEncryptTest.mix");
             Console.WriteLine("UnPacking...");
-            await MixUtils.UnPack( @"Out\RandomKeyEncryptTest.mix", @"Out\RandomKeyEncryptTest").ConfigureAwait(false);
+            await MixUtils.UnPack(@"Out\RandomKeyEncryptTest.mix", @"Out\RandomKeyEncryptTest").ConfigureAwait(false);
 
+
+            Console.WriteLine("All Test Pass!");
+        }
+        
+        [TestMethod]
+        public async Task DencryptTestAsync()
+        {
+            Console.WriteLine("Dencrypting...");
+            await MixUtils.Dencrypt(@"Resources\EncryptedTest.mix", @"Out\DencryptTest.mix");
+            Console.WriteLine("UnPacking...");
+            await MixUtils.UnPack(@"Out\DencryptTest.mix", @"Out\DencryptTest").ConfigureAwait(false);
 
             Console.WriteLine("All Test Pass!");
         }

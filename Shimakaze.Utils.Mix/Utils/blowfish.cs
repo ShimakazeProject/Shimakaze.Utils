@@ -57,6 +57,7 @@ namespace Shimakaze.Utils.Mix.Utils
 {
     public class BlowFish
     {
+
         #region "Global variables and constants"
 
         private const int ROUNDS = 16; //standard is 16, to increase the number of rounds, bf_P needs to be equal to the number of rouds. Use digits of PI.
@@ -539,5 +540,6 @@ namespace Shimakaze.Utils.Mix.Utils
         private static byte WordByte3(uint w) => (byte)(w % 256);
 
         #endregion
+
     }
 }

@@ -11,6 +11,7 @@ namespace Shimakaze.Utils.Mix.Utils
         {
             NativeLibrary.SetDllImportResolver(typeof(Native).Assembly, DllImportResolver);
         }
+
         private static IntPtr DllImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
         {
             IntPtr result;
@@ -46,7 +47,9 @@ namespace Shimakaze.Utils.Mix.Utils
             }
             return NativeLibrary.Load(libraryName);
         }
+       
         [DllImport("Shimakaze.Utils.Mix.Native", EntryPoint = "get_blowfish_key")]
         public static extern void GetBlowfishKey(byte[] s, byte[] d);
+
     }
 }
