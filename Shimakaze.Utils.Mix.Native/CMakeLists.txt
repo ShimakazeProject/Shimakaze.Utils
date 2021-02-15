@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(Shimakaze.Utils.Native.Mix VERSION 0.1.0)
+project(Shimakaze.Utils.Mix.Native VERSION 0.1.0)
 
 include(CTest)
 enable_testing()
 
-ADD_LIBRARY(Shimakaze.Utils.Native.Mix SHARED Shimakaze.Utils.Native.Mix.cpp)
+ADD_LIBRARY(Shimakaze.Utils.Mix.Native SHARED Shimakaze.Utils.Mix.Native.cpp)
 
-INSTALL(TARGETS Shimakaze.Utils.Native.Mix RUNTIME DESTINATION ./build/)
+INSTALL(TARGETS Shimakaze.Utils.Mix.Native RUNTIME DESTINATION ./build/)
 
-SET_TARGET_PROPERTIES(Shimakaze.Utils.Native.Mix PROPERTIES LINKER_LANGUAGE C)
+SET_TARGET_PROPERTIES(Shimakaze.Utils.Mix.Native PROPERTIES LINKER_LANGUAGE C)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

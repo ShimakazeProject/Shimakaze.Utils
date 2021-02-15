@@ -5,6 +5,7 @@
 		}
 	],
 	"settings": {
-
+		"dotnet-test-explorer.testProjectPath": "**/*Test.csproj",
+		"dotnetCoreExplorer.searchpatterns": "**/bin/**/**/*.{dll,exe}"
 	}
 }

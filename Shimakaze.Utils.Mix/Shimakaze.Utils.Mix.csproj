@@ -8,10 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="Shimakaze.Utils.Native.Mix-x64.dll">
+    <None Update="Shimakaze.Utils.Mix.Native-x64.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Shimakaze.Utils.Native.Mix.dll">
+    <None Update="Shimakaze.Utils.Mix.Native.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

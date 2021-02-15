@@ -46,7 +46,8 @@ namespace Shimakaze.Utils.Mix
                 Native.GetBlowfishKey(key_source, key);
 
                 BlowFish bf = new(key);
-                var buffer = bf.Decrypt_ECB(br.ReadBytes(8));
+                var tmp = br.ReadBytes(8);
+                var buffer = bf.Decrypt_ECB(tmp);
 
                 head = BytesToStruct<MixHeader>(buffer);
                 int IndexByteCount = head.Files * 12;
@@ -161,19 +162,18 @@ namespace Shimakaze.Utils.Mix
         /// <param name="mixFilePath"></param>
         /// <param name="inputFiles"></param>
         /// <param name="isTS"></param>
-        /// <param name="blowfish"></param>
         /// <returns></returns>
         public static async Task Pack(string mixFilePath, string[] inputFiles, bool isTS = default)
         {
             if (inputFiles.Length > short.MaxValue)
-                throw new ArgumentException($"ToMore! {short.MaxValue} < {inputFiles.Length}");
+                throw new ArgumentException($"Too More! {short.MaxValue} < {inputFiles.Length}");
 
             var files = inputFiles.Select(i => new FileInfo(i)).ToList();
 
             {
                 var a = files.Select(i => i.Length).Sum();
                 if (a > int.MaxValue)
-                    throw new ArgumentException($"ToLarge! {int.MaxValue}byte < {a}byte");
+                    throw new ArgumentException($"Too Large! {int.MaxValue}byte < {a}byte");
             }
 
             MixHeader head = new((short)files.Count);
@@ -237,6 +237,76 @@ namespace Shimakaze.Utils.Mix
                 await oflsw.FlushAsync();
             });
 
+            Console.WriteLine("All Done!");
+        }
+
+        public static async Task Encrypt(string mixFilePath, string outFilePath, string? key_source_path = default)
+        {
+            BlowFish bf;
+            byte[] buffer = new byte[8];
+            byte[] key_source = new byte[CB_MIX_KEY_SOURCE];
+            int flag = MIX_ENCRYPTED;
+
+            if (!Directory.Exists(Path.GetDirectoryName(outFilePath)))
+                Directory.CreateDirectory(Path.GetDirectoryName(outFilePath)!);
+
+            {
+                byte[] key = new byte[CB_MIX_KEY];
+
+                Console.WriteLine("Make Key");
+                if (!string.IsNullOrEmpty(key_source_path))
+                {
+                    await using FileStream kfs = new(key_source_path, FileMode.Open, FileAccess.Read, FileShare.Read);
+                    if (kfs.Length < CB_MIX_KEY_SOURCE)
+                        throw new Exception("key_source Too Short");
+                    if (kfs.Length > CB_MIX_KEY_SOURCE + 4)
+                        kfs.Seek(4, SeekOrigin.Begin);
+
+                    await kfs.ReadAsync(key_source.AsMemory(0, CB_MIX_KEY_SOURCE)).ConfigureAwait(false);
+                }
+                else
+                    new Random().NextBytes(key_source);
+
+                Native.GetBlowfishKey(key_source, key);
+                await File.WriteAllBytesAsync(outFilePath + ".key.source", key_source).ConfigureAwait(false);
+                await File.WriteAllBytesAsync(outFilePath + ".key", key).ConfigureAwait(false);
+                bf = new(key);
+            }
+
+            Console.WriteLine("Open Mix File");
+            await using FileStream fs = new(mixFilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            await using FileStream outfs = new(outFilePath, FileMode.Create, FileAccess.Write, FileShare.Read);
+            using BinaryReader br = new(fs);
+            var (isChecksum, isEncrypted) = ParseFlag(br.ReadInt32());
+            if (isEncrypted)
+                throw new Exception("It's Encrypted!");
+            if (isChecksum)
+                flag |= MIX_CHECKSUM;
+
+            BitConverter.GetBytes(flag).CopyTo(buffer, 0);
+            if (!BitConverter.IsLittleEndian)
+                Array.Reverse(buffer, 0, sizeof(int));
+
+            await outfs.WriteAsync(buffer.AsMemory(0, sizeof(int))).ConfigureAwait(false);
+            await outfs.WriteAsync(key_source.AsMemory()).ConfigureAwait(false);
+
+            Console.WriteLine("Encrypting Block");
+            var byteCount = br.ReadInt16() * 12 + 6;
+            fs.Seek(-sizeof(short), SeekOrigin.Current);
+            var blockCount = (int)Math.Ceiling(byteCount / 8d);
+            var blockCountFloor = byteCount / sizeof(long);
+            for (int i = 0; i <= blockCountFloor; i++)
+            {
+                new byte[sizeof(long)].CopyTo(buffer, 0);
+                await fs.ReadAsync(buffer.AsMemory(0, i == blockCountFloor ? byteCount % sizeof(long) : sizeof(long))).ConfigureAwait(false);
+                var tmp = bf.Encrypt_ECB(buffer.AsMemory(0, sizeof(long)).ToArray());
+                tmp.CopyTo(buffer, 0);
+                var tmp2 = bf.Decrypt_ECB(buffer);
+                await outfs.WriteAsync(buffer.AsMemory(0, sizeof(long))).ConfigureAwait(false);
+            }
+
+            Console.WriteLine("Write Mix Body");
+            await fs.CopyToAsync(outfs).ConfigureAwait(false);
             Console.WriteLine("All Done!");
         }
 
