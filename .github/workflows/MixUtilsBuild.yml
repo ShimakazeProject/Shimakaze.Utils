@@ -1,0 +1,29 @@
+name: .NET
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Restore dependencies
+      run: dotnet restore ./Shimakaze.Utils.Mix.Test/
+    - name: Build x86
+      run: dotnet build --no-restore -c win-x86 ./Shimakaze.Utils.Mix.Test/
+    - name: Test x86
+      run: dotnet test --no-build --verbosity normal -c win-x86 ./Shimakaze.Utils.Mix.Test/
+    - name: Build x64
+      run: dotnet build --no-restore -c win-x64 ./Shimakaze.Utils.Mix.Test/
+    - name: Test x64
+      run: dotnet test --no-build --verbosity normal -c win-x64 ./Shimakaze.Utils.Mix.Test/
