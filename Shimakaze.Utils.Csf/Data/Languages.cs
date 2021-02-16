@@ -9,21 +9,21 @@ namespace Shimakaze.Utils.Csf.Data
         /// <summary>
         /// Natural language for Ares
         /// </summary>
-        public const int ares_auto = -1;
-        public const int de = 2;
-        public const int en_UK = 1;
-        public const int en_US = 0;
-        public const int es = 4;
-        public const int fr = 3;
-        public const int it = 5;
-        public const int ja = 6;
+        public const int ARES_AUTO = -1;
+        public const int DE = 2;
+        public const int EN_UK = 1;
+        public const int EN_US = 0;
+        public const int ES = 4;
+        public const int FR = 3;
+        public const int IT = 5;
+        public const int JA = 6;
         /// <summary>
         /// Unknown
         /// </summary>
-        public const int jabberwockie = 7;
-        public const int ko = 8;
+        public const int JABBERWOCKIE = 7;
+        public const int KO = 8;
 
-        public const int zh = 9;
+        public const int ZH = 9;
     }
 
 }
