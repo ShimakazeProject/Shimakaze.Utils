@@ -4,7 +4,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Shimakaze.Utils.Csf.Utils.Json.V1
+namespace Shimakaze.Utils.Csf.Utils.Json.Common
 {
     public class MultiLineStringJsonConverter : JsonConverter<string>
     {

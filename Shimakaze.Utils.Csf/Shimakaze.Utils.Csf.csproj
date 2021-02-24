@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <TargetFramework>net5.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

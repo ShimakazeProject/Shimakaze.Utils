@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Shimakaze.Utils.Csf.Utils.Json.V1
+namespace Shimakaze.Utils.Csf.Utils.Json.V2
 {
     public static class CsfJsonConverterUtils
     {
@@ -33,11 +33,10 @@ namespace Shimakaze.Utils.Csf.Utils.Json.V1
 
                 };
                 options.Converters.Add(new CsfStructJsonConverter());
-                options.Converters.Add(new CsfHeadJsonConverter());
                 options.Converters.Add(new CsfLabelsJsonConverter());
                 options.Converters.Add(new CsfLabelJsonConverter());
-                options.Converters.Add(new CsfValuesJsonConverter());
-                options.Converters.Add(new CsfValueJsonConverter());
+                options.Converters.Add(new V1.CsfValuesJsonConverter());
+                options.Converters.Add(new V1.CsfValueJsonConverter());
                 options.Converters.Add(new Common.MultiLineStringJsonConverter());
                 return _csfJsonSerializerOptions = options;
             }

@@ -46,21 +46,11 @@ namespace Shimakaze.Utils.Csf.Utils.Json.V1
             return csfStr;
         }
         public override void Write(Utf8JsonWriter writer, CsfValue value, JsonSerializerOptions options)
-        {
-            var converter = options.GetConverter<string>();
-            if (string.IsNullOrEmpty(value.Extra))
-            {
-                converter!.Write(writer, value.Value, options);
-            }
-            else
-            {
-                //writer.WriteStartObject();
-                //writer.WritePropertyName(nameof(value.Value).ToLower());
-                converter!.Write(writer, value.Value, options);
+        {            
+            options.GetConverter<string>()!.Write(writer, value.Value, options);
 
+            if (!string.IsNullOrEmpty(value.Extra))
                 writer.WriteString(nameof(value.Extra).ToLower(), value.Extra);
-                //writer.WriteEndObject();
-            }
         }
     }
 }

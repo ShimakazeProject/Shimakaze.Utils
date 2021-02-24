@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 using Shimakaze.Utils.Csf.Struct;
 using Shimakaze.Utils.Csf.Utils;
-using Shimakaze.Utils.Csf.Utils.Json.V1;
+using Shimakaze.Utils.Csf.Utils.Json.V2;
 
 namespace Shimakaze.Utils.Csf
 {
-    public static class V1
+    public static class V2
     {
         public static async Task Convert(string input, string? output = default, int bufferLength = 1024)
         {
@@ -19,12 +19,12 @@ namespace Shimakaze.Utils.Csf
             switch (Path.GetExtension(input)?.ToUpper())
             {
                 case ".JSON":
-                    Console.WriteLine("Convert Json to Csf Protocol 1");
+                    Console.WriteLine("Convert Json to Csf Protocol 2");
                     method = Json2Csf;
                     extension = ".csf";
                     break;
                 case ".CSF":
-                    Console.WriteLine("Convert Csf to Json Protocol 1");
+                    Console.WriteLine("Convert Csf to Json Protocol 2");
                     method = Csf2Json;
                     extension = ".json";
                     break;

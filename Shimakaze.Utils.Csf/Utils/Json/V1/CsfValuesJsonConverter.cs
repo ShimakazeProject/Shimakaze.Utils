@@ -39,15 +39,6 @@ namespace Shimakaze.Utils.Csf.Utils.Json.V1
             else if (value.Count == 1)
             {
                 writer.WritePropertyName("value");
-                //if (string.IsNullOrEmpty(value[0].Extra))
-                //{
-                //    writer.WriteStartObject();
-                //    writer.WritePropertyName(nameof(value[0].Value).ToLower());
-                //    converter.Write(writer, value.Value, options);
-
-                //    writer.WriteString(nameof(value.Extra).ToLower(), value.Extra);
-                //    writer.WriteEndObject();
-                //}
                 converter!.Write(writer, value[0], options);
             }
             else{
