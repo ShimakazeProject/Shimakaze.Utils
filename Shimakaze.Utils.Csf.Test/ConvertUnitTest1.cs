@@ -36,6 +36,9 @@ namespace Shimakaze.Utils.Csf.Test
             Console.WriteLine("JSON 2 CSF");
             await V1.Convert(@"Out\v1\ra2md.json", @"Out\v1\ra2md.csf").ConfigureAwait(false);
 
+            Console.WriteLine("CSF 2 JSON");
+            await V1.Convert(@"Out\v1\ra2md.csf", @"Out\v1\ra2md.json").ConfigureAwait(false);
+
             Console.WriteLine("Check");
             var newFile = new FileInfo(@"Out\v1\ra2md.csf").Length;
             var source = new FileInfo(@"Resources\ra2md.csf").Length;
@@ -52,6 +55,9 @@ namespace Shimakaze.Utils.Csf.Test
 
             Console.WriteLine("JSON 2 CSF");
             await V2.Convert(@"Out\v2\ra2md.json", @"Out\v2\ra2md.csf").ConfigureAwait(false);
+
+            Console.WriteLine("CSF 2 JSON");
+            await V1.Convert(@"Out\v2\ra2md.csf", @"Out\v2\ra2md.json").ConfigureAwait(false);
 
             Console.WriteLine("Check");
             var newFile = new FileInfo(@"Out\v2\ra2md.csf").Length;
