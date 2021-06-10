@@ -53,10 +53,11 @@ namespace Shimakaze.Utils.Csf.Utils
         {
             buffer.SizeCheck(8);
             var flag = string.IsNullOrEmpty(@this.Extra);
-            var str = Encoding.Unicode.GetBytes(@this.Value.Replace("\r\n", "\n"));
+            var raw = @this.Value.Replace("\r\n", "\n");
+            var str = Encoding.Unicode.GetBytes(raw);
 
             (flag ? STR_RAW : WSTR_RAW).CopyToLittleEndianByteArray(buffer);
-            @this.Value.Length.CopyToLittleEndianByteArray(buffer, 4);
+            raw.Length.CopyToLittleEndianByteArray(buffer, 4);
 
             await stream.WriteAsync(buffer.AsMemory(0, 8)).ConfigureAwait(false);
             await stream.WriteAsync(Decoding(str).AsMemory()).ConfigureAwait(false);
