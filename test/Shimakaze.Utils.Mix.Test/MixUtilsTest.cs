@@ -9,6 +9,13 @@ namespace Shimakaze.Utils.Mix.Test
     public class MixUtilsTest
     {
         [TestMethod]
+        public async Task UnPackEncryptedTestAsync()
+        {
+            Console.WriteLine("Encrypted Mix Unpacking...");
+            await MixUtils.UnPack(@"Resources\EncryptedTest.mix", @"Out\EncryptedTest").ConfigureAwait(false);
+            Console.WriteLine("All Test Pass!");
+        }
+        [TestMethod]
         public async Task UnPackTestAsync()
         {
             Console.WriteLine("Normal Mix Unpacking...");

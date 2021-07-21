@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 using Shimakaze.Utils.Csf.Struct;
 
-namespace Shimakaze.Utils.Csf.Utils.Json.V2
+namespace Shimakaze.Utils.Csf.Utils.Json.V1
 {
     public class CsfStructJsonConverter : JsonConverter<CsfStruct>
     {
@@ -15,8 +15,6 @@ namespace Shimakaze.Utils.Csf.Utils.Json.V2
                 throw new JsonException();
 
             var result = new CsfStruct();
-            result.Head.Version = 3;
-            result.Head.Language = 0;
             while (reader.Read())
             {
                 if (reader.TokenType == JsonTokenType.EndObject)
@@ -33,28 +31,12 @@ namespace Shimakaze.Utils.Csf.Utils.Json.V2
                         reader.Read();
                         if (reader.TokenType != JsonTokenType.Number)
                             throw new JsonException();
-                        if (reader.GetInt32() != 2)
-                            throw new NotSupportedException("Supported protocol Version is 2 but it is " + reader.GetInt32());
+                        if (reader.GetInt32() != 1)
+                            throw new NotSupportedException("Supported protocol Version is 1 but it is " + reader.GetInt32());
                         break;
-                    case "version":
+                    case "head":
                         reader.Read();
-                        result.Head.Version = reader.GetInt32();
-                        break;
-                    case "language":
-                        reader.Read();
-                        if (reader.TokenType is JsonTokenType.Number)
-                        {
-                            result.Head.Language = reader.GetInt32();
-                        }
-                        else if (reader.TokenType is JsonTokenType.String)
-                        {
-                            var code = reader.GetString();
-                            for (result.Head.Language = 0; result.Head.Language < HeadUtil.LanguageList.Length; result.Head.Language++)
-                            {
-                                if (HeadUtil.LanguageList[result.Head.Language].Equals(code))
-                                    break;
-                            }
-                        }
+                        result.Head = options!.GetConverter<CsfHead>()!.Read(ref reader, options)!;
                         break;
                     case "data":
                         reader.Read();
@@ -70,11 +52,10 @@ namespace Shimakaze.Utils.Csf.Utils.Json.V2
         public override void Write(Utf8JsonWriter writer, CsfStruct value, JsonSerializerOptions options)
         {
             writer.WriteStartObject();
-            writer.WriteString("$schema", "https://shimakazeproj.github.io/json/csf/v2/schema.json");
-            writer.WriteNumber("protocol", 2);
-            writer.WriteNumber(nameof(value.Head.Version).ToLower(), value.Head.Version);
-            writer.WriteNumber(nameof(value.Head.Language).ToLower(), value.Head.Language);
-
+            writer.WriteString("$schema", SchemaUrls.V1);
+            writer.WriteNumber("protocol", 1);
+            writer.WritePropertyName(nameof(value.Head).ToLower());
+            options!.GetConverter<CsfHead>()!.Write(writer, value.Head, options);
             writer.WritePropertyName(nameof(value.Data).ToLower());
             options!.GetConverter<List<CsfLabel>>()!.Write(writer, value.Data, options);
             writer.WriteEndObject();

@@ -12,7 +12,7 @@ namespace Shimakaze.Utils.Mix
 {
     public static class MixUtils
     {
-        
+
         #region Constant
 
         internal const int MIX_CHECKSUM = 0x0001_0000;
@@ -267,7 +267,11 @@ namespace Shimakaze.Utils.Mix
         public static BlowFish CreateBlowFishFromKeySource(byte[] key_source)
         {
             byte[] key = new byte[CB_MIX_KEY];
+            byte[] key2 = new byte[CB_MIX_KEY];
             Native.GetBlowfishKey(key_source, key);
+            File.WriteAllBytes("key_source", key_source);
+            File.WriteAllBytes("key1", key);
+            File.WriteAllBytes("key2", key2);
             return new(key);
         }
 

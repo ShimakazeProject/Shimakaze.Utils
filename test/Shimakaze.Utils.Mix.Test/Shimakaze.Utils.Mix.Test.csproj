@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -14,11 +13,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shimakaze.Utils.Csf\Shimakaze.Utils.Csf.csproj" />
+    <ProjectReference Include="..\..\src\Shimakaze.Utils.Mix\Shimakaze.Utils.Mix.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Resources\ra2md.csf">
+    <None Update="Resources\NormalTest.mix">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\NormalTSTest.mix">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\EncryptedTest.mix">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\EncryptedTSTest.mix">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
