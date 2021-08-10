@@ -1,7 +1,7 @@
 # Shimakaze.Utils
 
 一个适用于[Powershell](//aka.ms/powershell) (**不适用于Windows Powershell**) 的工具集  
-它在[此处](//github.com/ShimakazeProject/Shimakaze.Tools)重写
+这套工具集已经在[ShimakazeProject/Shimakaze.Tools](//github.com/ShimakazeProject/Shimakaze.Tools)仓库中重写
 
 ## MIX Utils ![MixUtils Build](https://github.com/ShimakazeProj/Shimakaze.Utils/workflows/MixUtilsBuild/badge.svg)
 
